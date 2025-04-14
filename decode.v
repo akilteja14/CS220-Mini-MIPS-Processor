@@ -22,8 +22,8 @@
 
 module Decode (
     input  wire [31:0] instr,         // fetched instruction
-    input  wire        zero_flag,     // from ALU (for integer branches)
-    input  wire        fp_cc,         // FP condition-code flag (for FP branches)
+    //input  wire        zero_flag,     // from ALU (for integer branches)
+    //input  wire        fp_cc,         // FP condition-code flag (for FP branches)
     output wire [4:0]  rs, rt, rd,    // register specifiers
     output wire [4:0]  shamt,         // shift amount
     output wire [15:0] imm16,         // raw immediate
