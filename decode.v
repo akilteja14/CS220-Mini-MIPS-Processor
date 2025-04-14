@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module decode (
+module Decode (
     input  wire [31:0] instr,         // fetched instruction
     input  wire        zero_flag,     // from ALU (for integer branches)
     input  wire        fp_cc,         // FP condition-code flag (for FP branches)
@@ -35,7 +35,7 @@ module decode (
                        mem_read, mem_write, branch_eq, branch_ne,
                        branch_gt, branch_gte, branch_lt, branch_lte,
                        branch_gtu, branch_ltu, jump, jump_reg, link,
-    output reg [4:0]   alu_op,        // ALU main op code
+    output reg [4:0]   alu_ctrl,        // ALU main op code
     //output reg [2:0]   fp_op          // floating-point operation code
 );
     wire [5:0] opcode = instr[31:26];
@@ -58,26 +58,26 @@ module decode (
         {reg_dst, alu_src, mem_to_reg, reg_write, mem_read, mem_write,
          branch_eq, branch_ne, branch_gt, branch_gte, branch_lt, branch_lte,
          branch_gtu, branch_ltu, jump, jump_reg, link} = 0;
-        alu_op = 5'b00000;
+        alu_ctrl = 5'b00000;
         //fp_op  = 3'b000;
         case (opcode)
             // R-Type Integer Arithmetic & Logical (opcode=0)
             6'b000000: begin
                 reg_dst   = 1;
                 reg_write = 1;
-                alu_op    = 5'b00000; // use funct
+                alu_ctrl    = 5'b00000; // use funct
                 case (funct)
-                    6'b100000: alu_op = 5'b00001; // add
-                    6'b100001: alu_op = 5'b00010;//addu
-                    6'b100010: alu_op = 5'b00011;//sub
-                    6'b100011: alu_op = 5'b00100; //subu
-                    6'b100100: alu_op = 5'b00101; // and
-                    6'b100101: alu_op = 5'b00110; // or
-                    6'b100110: alu_op = 5'b00111; // xor
-                    6'b101010: alu_op = 5'b01000; // slt
-                    6'b000000: alu_op = 5'b01001; // sll
-                    6'b000010: alu_op = 5'b01010; // srl
-                    6'b000011: alu_op = 5'b01011; // sra
+                    6'b100000: alu_ctrl = 5'b00001; // add
+                    6'b100001: alu_ctrl = 5'b00010; // addu
+                    6'b100010: alu_ctrl = 5'b00011; // sub
+                    6'b100011: alu_ctrl = 5'b00100; // subu
+                    6'b100100: alu_ctrl = 5'b00101; // and
+                    6'b100101: alu_ctrl = 5'b00110; // or
+                    6'b100110: alu_ctrl = 5'b00111; // xor
+                    6'b101010: alu_ctrl = 5'b01000; // slt
+                    6'b000000: alu_ctrl = 5'b01001; // sll
+                    6'b000010: alu_ctrl = 5'b01010; // srl
+                    6'b000011: alu_ctrl = 5'b01011; // sra
                     default: ;
                 endcase
             end
@@ -86,43 +86,43 @@ module decode (
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_op     = 5'b00001; // ADD
+                alu_ctrl     = 5'b00001; // ADD
             end
             6'b001001: begin
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_op     = 5'b00010;// ADDIU
+                alu_ctrl     = 5'b00010; // ADDIU
             end
             6'b001100: begin // andi
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_op     = 5'b00101; // AND
+                alu_ctrl     = 5'b00101; // AND
             end
             6'b001101: begin // ori
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_op     = 5'b00110; // OR
+                alu_ctrl     = 5'b00110; // OR
             end
             6'b001110: begin // xori
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_op     = 5'b00111; // XOR
+                alu_ctrl     = 5'b00111; // XOR
             end
             6'b001010: begin // slti
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_op     = 5'b01000; // SLT
+                alu_ctrl     = 5'b01000; // SLT
             end
             6'b001111: begin // lui
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_op     = 5'b01100; // LUI
+                alu_ctrl     = 5'b01100; // LUI
             end
             // Data Transfer
             6'b100011: begin // lw
@@ -131,22 +131,22 @@ module decode (
                 mem_to_reg = 1;
                 reg_write  = 1;
                 mem_read   = 1;
-                alu_op     = 5'b00001; // ADD
+                alu_ctrl     = 5'b00001; // ADD
             end
             6'b101011: begin // sw
                 alu_src    = 1;
                 mem_write  = 1;
-                alu_op     = 5'b00001; // ADD
+                alu_ctrl     = 5'b00001; // ADD
             end
             // Conditional Branches
-            6'b000100: branch_eq  = 1; // beq
-            6'b000101: branch_ne  = 1; // bne
-            6'b000111: branch_gt  = 1; // bgt
-            6'b001111: branch_gte = 1; // bgte
-            6'b000110: branch_lt  = 1; // ble
-            6'b000110: branch_lte = 1; // bleq
-            6'b000110: branch_ltu = 1; // bleu
-            6'b000110: branch_gtu = 1; // bgtu
+            6'b000100: begin branch_eq  = 1;alu_ctrl = 5'b00011; end// beq
+            6'b000101: begin branch_ne  = 1;alu_ctrl = 5'b00011; end // bne
+            6'b000111: begin branch_gt  = 1;alu_ctrl = 5'b00011; end // bgt
+            6'b001111: begin branch_gte = 1;alu_ctrl = 5'b00011; end // bgte
+            6'b000110: begin branch_lt  = 1;alu_ctrl = 5'b00011; end // ble
+            6'b000110: begin branch_lte = 1;alu_ctrl = 5'b00011; end // bleq
+            6'b000110: begin branch_ltu = 1;alu_ctrl = 5'b00011; end // bleu
+            6'b000110: begin branch_gtu = 1;alu_ctrl = 5'b00011; end // bgtu
             // Unconditional Branches
             6'b000010: jump = 1; // j
             6'b000011: begin // jal

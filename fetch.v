@@ -52,9 +52,9 @@
 ////			program_counter <= program_counter + 1;
 ////		end
 ////	end
-//endmodule
+// endmodule
 
-module fetch(addr, instruction);
+module Fetch(addr, instruction);
 input [9:0] addr;
 output [31:0] instruction;
 wire clk;
