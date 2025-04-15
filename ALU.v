@@ -1,36 +1,21 @@
 `timescale 1ns / 1ps
 
-module ALU(input [4:0] alu_ctrl,input [31:0] data1,input [31:0] instruction,input [31:0] read2,input alu_src,output reg[31:0] alu_result,output reg bool_eq,output reg bool_gt,output reg bool_lt,output reg bool_gte,output reg bool_lte,output reg bool_gtu,output reg bool_ltu);
-    reg[31:0] data2;
-
-    always @(alu_src,read2,instruction) begin
-        if(alu_src) begin
-            if(instuction[15] == 1'b0) begin
-                data2 = {16'b0,instruction[15:0]};
-            end
-            else begin
-                data2 = {16{1'b1},instruction[15:0]};
-            end
-        end
-        else begin
-            data2 = read2;
-        end
-    end
+module ALU(input [4:0] alu_ctrl,input [31:0] data1,input [31:0] instruction,input [31:0] data2, output reg[31:0] alu_result,output reg bool_eq,output reg bool_gt,output reg bool_lt,output reg bool_gte,output reg bool_lte,output reg bool_gtu,output reg bool_ltu);
 
     always @(alu_ctrl,data1,data2) begin
         case(alu_ctrl)
-            5'b00001 alu_result = data1 + data2;// signed , check overflow and send to EPC
-            5'b00010 alu_result = data1 + data2;
-            5'b00011 alu_result = data1 - data2;// signed , check overflow and send to EPC
-            5'b00100 alu_result = data1 - data2;
-            5'b00101 alu_result = data1 & data2;
-            5'b00110 alu_result = data1 | data2;
-            5'b00111 alu_result = data1 ^ data2;
-            5'b01000 alu_result = data1 < data2 ? 1 : 0;
-            5'b01001 alu_result = data2 << instruction[10:6];
-            5'b01010 alu_result = data2 >> instruction[10:6];
-            5'b01011 alu_result = data2 >>> instruction[10:6];
-            5'b01100 alu_result = {instruction[15:0],16'b0};// lui
+            5'b00001: alu_result = data1 + data2;// signed , check overflow and send to EPC
+            5'b00010: alu_result = data1 + data2;
+            5'b00011: alu_result = data1 - data2;// signed , check overflow and send to EPC
+            5'b00100: alu_result = data1 - data2;
+            5'b00101: alu_result = data1 & data2;
+            5'b00110: alu_result = data1 | data2;
+            5'b00111: alu_result = data1 ^ data2;
+            5'b01000: alu_result = data1 < data2 ? 1 : 0;
+            5'b01001: alu_result = data2 << instruction[10:6];
+            5'b01010: alu_result = data2 >> instruction[10:6];
+            5'b01011: alu_result = data2 >>> instruction[10:6];
+            5'b01100: alu_result = {instruction[15:0],16'b0};// lui
         endcase 
     end
 

@@ -35,7 +35,7 @@ module Decode (
                        mem_read, mem_write, branch_eq, branch_ne,
                        branch_gt, branch_gte, branch_lt, branch_lte,
                        branch_gtu, branch_ltu, jump, jump_reg, link,
-    output reg [4:0]   alu_ctrl,        // ALU main op code
+    output reg [4:0]   alu_ctrl        // ALU main op code
     //output reg [2:0]   fp_op          // floating-point operation code
 );
     wire [5:0] opcode = instr[31:26];

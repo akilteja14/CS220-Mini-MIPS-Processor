@@ -60,7 +60,7 @@ output [31:0] instruction;
 wire clk;
 wire we = 0;
 
-memory_wrapper mem(a,d,addr,clk,we,instruction);
+
 
 endmodule
 
