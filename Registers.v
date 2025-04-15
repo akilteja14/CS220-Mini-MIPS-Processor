@@ -8,6 +8,8 @@ module Registers(input [4:0] rs,input [4:0] rt,input [4:0] rd,output [31:0] read
     assign read_data1 = registers[rs];
     assign read_data2 = registers[rt];
 
+    assign registers[0] = 32'b0; // Register 0 is always 0
+
     always @(posedge clk) begin
         // if(reset) begin
         //     registers[0] <= 32'b0;

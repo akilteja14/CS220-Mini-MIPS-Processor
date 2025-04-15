@@ -141,12 +141,12 @@ module Decode (
             // Conditional Branches
             6'b000100: begin branch_eq  = 1;alu_ctrl = 5'b00011; end// beq
             6'b000101: begin branch_ne  = 1;alu_ctrl = 5'b00011; end // bne
-            6'b000111: begin branch_gt  = 1;alu_ctrl = 5'b00011; end // bgt
+            6'b111000: begin branch_gt  = 1;alu_ctrl = 5'b00011; end // bgt
             6'b001111: begin branch_gte = 1;alu_ctrl = 5'b00011; end // bgte
-            6'b000110: begin branch_lt  = 1;alu_ctrl = 5'b00011; end // ble
-            6'b000110: begin branch_lte = 1;alu_ctrl = 5'b00011; end // bleq
-            6'b000110: begin branch_ltu = 1;alu_ctrl = 5'b00011; end // bleu
-            6'b000110: begin branch_gtu = 1;alu_ctrl = 5'b00011; end // bgtu
+            6'b111001: begin branch_lt  = 1;alu_ctrl = 5'b00011; end // ble
+            6'b111010: begin branch_lte = 1;alu_ctrl = 5'b00011; end // bleq
+            6'b111011: begin branch_ltu = 1;alu_ctrl = 5'b00011; end // bleu
+            6'b111100: begin branch_gtu = 1;alu_ctrl = 5'b00011; end // bgtu
             // Unconditional Branches
             6'b000010: jump = 1; // j
             6'b000011: begin // jal
