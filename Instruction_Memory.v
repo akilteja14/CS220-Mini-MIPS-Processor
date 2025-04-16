@@ -20,8 +20,8 @@ module Instruction_memory(
 
     integer i;
     initial begin
-        instr_mem[0] = 32'b001000_00001_00000_0000000000001010; // addi $1, $0, 10
-        instr_mem[1] = 32'b001000_00010_00001_0000000000010100; // addi $2, $1, 20
+        instr_mem[0] = 32'b001000_00000_00001_0000000000001010; // addi $1, $0, 10
+        instr_mem[1] = 32'b001000_00001_00010_0000000000010100; // addi $2, $1, 20
         // for (i = 0; i < INSTR_MEM_HEIGHT; i = i + 1) begin
         //     instr_mem[i] = 32'b11111100000000000000000000000000;
         // end
@@ -50,7 +50,7 @@ module Instruction_memory(
     // instruction = 32'b11111100000000000000000000000000;
     end
 
-    assign dpo = instr_mem[dpra]; // Read data from instruction memory at address dpra
+    assign dpo = instr_mem[dpra >> 2]; // Read data from instruction memory at address dpra
 
 
 endmodule
