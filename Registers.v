@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module Registers(input [4:0] rs,input [4:0] rt,input [4:0] rd,output [31:0] read_data1,output [31:0] read_data2,input [31:0] write_data,input reg_write,input clk);
+module Registers(input [4:0] rs,input [4:0] rt,input [4:0] rd,input reg_dst,output [31:0] read_data1,output [31:0] read_data2,input [31:0] write_data,input reg_write,input clk);
     reg [31:0] registers[0:31];
     // wire [31:0] read_data1,read_data2;
     // wire [31:0] write_data;
@@ -46,12 +46,17 @@ module Registers(input [4:0] rs,input [4:0] rt,input [4:0] rd,output [31:0] read
         //     registers[31] <= 32'b0;
         // end
         if(reg_write) begin
-            registers[rd] <= write_data; // write to rd
+            if(reg_dst) begin
+                registers[rd] <= write_data; // write to rd
+            end
+            else begin
+                registers[rt] <= write_data; // write to rt
+            end
         end
     end
     assign read_data1 = registers[rs];
     assign read_data2 = registers[rt];
     initial begin
-        $monitor("Register 0: %d, Register 1: %d, Register 2: %d", registers[0], registers[1], registers[2]);
+        $monitor("Register 0: %d, Register 1: %d, Register 2: %d, Register 3: %d", registers[0], registers[1], registers[2], registers[3]);
     end
 endmodule 

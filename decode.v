@@ -78,6 +78,11 @@ module Decode (
                     6'b000000: alu_ctrl = 5'b01001; // sll
                     6'b000010: alu_ctrl = 5'b01010; // srl
                     6'b000011: alu_ctrl = 5'b01011; // sra
+                    6'b011000: begin
+                        alu_ctrl = 5'b01101; // mul lo, hi
+                        reg_dst = 0;
+                        reg_write = 0;
+                    end
                     default: ;
                 endcase
             end
@@ -86,7 +91,7 @@ module Decode (
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_ctrl     = 5'b00001; // ADD
+                alu_ctrl     = 5'b00001; // ADDI
             end
             6'b001001: begin
                 reg_dst    = 0;
@@ -98,25 +103,25 @@ module Decode (
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_ctrl     = 5'b00101; // AND
+                alu_ctrl     = 5'b00101; // ANDI
             end
             6'b001101: begin // ori
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_ctrl     = 5'b00110; // OR
+                alu_ctrl     = 5'b00110; // ORI
             end
             6'b001110: begin // xori
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_ctrl     = 5'b00111; // XOR
+                alu_ctrl     = 5'b00111; // XORI
             end
             6'b001010: begin // slti
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
-                alu_ctrl     = 5'b01000; // SLT
+                alu_ctrl     = 5'b01000; // SLTI
             end
             6'b001111: begin // lui
                 reg_dst    = 0;
@@ -131,12 +136,12 @@ module Decode (
                 mem_to_reg = 1;
                 reg_write  = 1;
                 mem_read   = 1;
-                alu_ctrl     = 5'b00001; // ADD
+                alu_ctrl     = 5'b00001;
             end
             6'b101011: begin // sw
                 alu_src    = 1;
                 mem_write  = 1;
-                alu_ctrl     = 5'b00001; // ADD
+                alu_ctrl     = 5'b00001;
             end
             // Conditional Branches
             6'b000100: begin branch_eq  = 1;alu_ctrl = 5'b00011; end// beq

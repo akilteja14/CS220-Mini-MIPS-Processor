@@ -2,13 +2,16 @@
 
 module main_tb;
 
-    reg clk;
+    reg clk,reset;
+    main uut(clk,reset);
+    initial begin 
+        reset = 1;
+        #12 reset = 0;
+    end
     initial clk = 0;
     always begin
         #5 clk = ~clk;
     end
-
-    main uut(clk);
-
-
+    initial #66 $finish;
+    
 endmodule
