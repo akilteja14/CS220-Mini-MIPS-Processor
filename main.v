@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
-module Main();
+module main(input clk);
     wire [31:0] d;// Ensure d is declared as a 32-bit signal
-    wire clk,reset,we;
+    wire reset,we;
     wire [31:0] pc_out; // Ensure pc_out is declared as a 32-bit signal
     wire [31:0] next_pc;
     wire [31:0] instruction;
