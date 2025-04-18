@@ -67,19 +67,19 @@ module Decode (
                 reg_write = 1;
                 alu_ctrl    = 5'b00000; // use funct
                 case (funct)
-                    6'b100000: alu_ctrl = 5'b00001; // add
+                    6'b100000: alu_ctrl = 5'b00001; // add -> assembler done
                     6'b100001: alu_ctrl = 5'b00010; // addu
-                    6'b100010: alu_ctrl = 5'b00011; // sub
+                    6'b100010: alu_ctrl = 5'b00011; // sub -> assembler done
                     6'b100011: alu_ctrl = 5'b00100; // subu
-                    6'b100100: alu_ctrl = 5'b00101; // and
-                    6'b100101: alu_ctrl = 5'b00110; // or
-                    6'b100110: alu_ctrl = 5'b00111; // xor
-                    6'b101010: alu_ctrl = 5'b01000; // slt
-                    6'b000000: alu_ctrl = 5'b01001; // sll
-                    6'b000010: alu_ctrl = 5'b01010; // srl
-                    6'b000011: alu_ctrl = 5'b01011; // sra
+                    6'b100100: alu_ctrl = 5'b00101; // and -> assembler done
+                    6'b100101: alu_ctrl = 5'b00110; // or -> assembler done
+                    6'b100110: alu_ctrl = 5'b00111; // xor -> assembler done
+                    6'b101010: alu_ctrl = 5'b01000; // slt -> assembler done
+                    6'b000000: alu_ctrl = 5'b01001; // sll -> assembler done
+                    6'b000010: alu_ctrl = 5'b01010; // srl -> assembler done
+                    6'b000011: alu_ctrl = 5'b01011; // sra -> assembler done
                     6'b011000: begin
-                        alu_ctrl = 5'b01101; // mul lo, hi
+                        alu_ctrl = 5'b01101; // mul => lo, hi -> assembler done
                         reg_dst = 0;
                         reg_write = 0;
                     end
@@ -87,7 +87,7 @@ module Decode (
                 endcase
             end
             // I-Type Arithmetic/Logical
-            6'b001000: begin // addi
+            6'b001000: begin // addi -> assembler done
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
@@ -99,19 +99,19 @@ module Decode (
                 reg_write  = 1;
                 alu_ctrl     = 5'b00010; // ADDIU
             end
-            6'b001100: begin // andi
+            6'b001100: begin // andi -> assembler done
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
                 alu_ctrl     = 5'b00101; // ANDI
             end
-            6'b001101: begin // ori
+            6'b001101: begin // ori -> assembler done
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
                 alu_ctrl     = 5'b00110; // ORI
             end
-            6'b001110: begin // xori
+            6'b001110: begin // xori -> assembler done
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
@@ -123,14 +123,14 @@ module Decode (
                 reg_write  = 1;
                 alu_ctrl     = 5'b01000; // SLTI
             end
-            6'b001111: begin // lui
+            6'b001111: begin // lui -> assembler done
                 reg_dst    = 0;
                 alu_src    = 1;
                 reg_write  = 1;
                 alu_ctrl     = 5'b01100; // LUI
             end
             // Data Transfer
-            6'b100011: begin // lw
+            6'b100011: begin // lw -> assembler done
                 reg_dst    = 0;
                 alu_src    = 1;
                 mem_to_reg = 1;
@@ -138,28 +138,28 @@ module Decode (
                 mem_read   = 1;
                 alu_ctrl     = 5'b00001;
             end
-            6'b101011: begin // sw
+            6'b101011: begin // sw -> assembler done
                 alu_src    = 1;
                 mem_write  = 1;
                 alu_ctrl     = 5'b00001;
             end
             // Conditional Branches
-            6'b000100: begin branch_eq  = 1;alu_ctrl = 5'b00011; end// beq
-            6'b000101: begin branch_ne  = 1;alu_ctrl = 5'b00011; end // bne
-            6'b111000: begin branch_gt  = 1;alu_ctrl = 5'b00011; end // bgt
-            6'b001111: begin branch_gte = 1;alu_ctrl = 5'b00011; end // bgte
-            6'b111001: begin branch_lt  = 1;alu_ctrl = 5'b00011; end // ble
-            6'b111010: begin branch_lte = 1;alu_ctrl = 5'b00011; end // bleq
-            6'b111011: begin branch_ltu = 1;alu_ctrl = 5'b00011; end // bleu
-            6'b111100: begin branch_gtu = 1;alu_ctrl = 5'b00011; end // bgtu
+            6'b000100: begin branch_eq  = 1;alu_ctrl = 5'b00011; end // beq -> assembler done
+            6'b000101: begin branch_ne  = 1;alu_ctrl = 5'b00011; end // bne -> assembler done
+            6'b111000: begin branch_gt  = 1;alu_ctrl = 5'b00011; end // bgt -> assembler done
+            6'b001111: begin branch_gte = 1;alu_ctrl = 5'b00011; end // bgte -> opcode clash with lui
+            6'b111001: begin branch_lt  = 1;alu_ctrl = 5'b00011; end // ble -> assembler done
+            6'b111010: begin branch_lte = 1;alu_ctrl = 5'b00011; end // bleq -> assembler done
+            6'b111011: begin branch_ltu = 1;alu_ctrl = 5'b00011; end // bleu -> assembler done
+            6'b111100: begin branch_gtu = 1;alu_ctrl = 5'b00011; end // bgtu -> assembler done
             // Unconditional Branches
-            6'b000010: jump = 1; // j
-            6'b000011: begin // jal
+            6'b000010: jump = 1; // j -> assembler done
+            6'b000011: begin // jal -> assembler done
                 jump      = 1;
                 link      = 1;
                 reg_write = 1;
             end
-            6'b000000: if (funct == 6'b001000) jump_reg = 1; // jr
+            6'b000000: if (funct == 6'b001000) jump_reg = 1; // jr -> assembler done
             // Floating-Point Operations
 //            6'b010001: begin
 //                case (rs_f)
@@ -174,6 +174,8 @@ module Decode (
 //                    default: ;
 //                endcase
 //            end
+
+            // to add functionality for FINISH instruction => opcode 0x3F -> assembler done
             default: ;
         endcase
     end

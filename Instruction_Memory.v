@@ -20,15 +20,15 @@ module Instruction_memory(
     
     integer i;
     initial begin
-        instr_mem[0] = 32'b001000_00000_00001_0000000000001010; // addi $1, $0, 10
-        instr_mem[1] = 32'b001000_00001_00010_0000000000010100; // addi $2, $1, 20
-        instr_mem[2] = 32'b000000_00001_00010_0000000000011000; // mul $1, $2 -> result in lo and hi
+        instr_mem[0] = 32'b001000_00000_00001_0000000000001011; // addi $1, $0, 11
+        instr_mem[1] = 32'b001000_00001_00010_0000000000011110; // addi $2, $1, 30
+        instr_mem[2] = 32'b000000_00001_00010_0000000000_011000; // mul $1, $2 -> result in lo and hi
         instr_mem[3] = 32'b000000_00001_00010_00011_00000_100000;   // add $3, $1, $2;
         instr_mem[4] = 32'b101011_00000_00011_0000000000000100; // sw $3, 4($0)
         
         //instr_mem[5] = 32'b100011_00000_00100_0000000000000100; // lw $4, 4($0)
         // to put an instruction to trigger the end of simulation when the code has finished executing
-        
+        // instr_mem[5] = 32'b111111_11111111111111111111111111; // FINISH instruction
         
         // for (i = 0; i < INSTR_MEM_HEIGHT; i = i + 1) begin
         //     instr_mem[i] = 32'b11111100000000000000000000000000;
