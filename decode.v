@@ -147,7 +147,7 @@ module Decode (
             6'b000100: begin branch_eq  = 1;alu_ctrl = 5'b00011; end // beq -> assembler done
             6'b000101: begin branch_ne  = 1;alu_ctrl = 5'b00011; end // bne -> assembler done
             6'b111000: begin branch_gt  = 1;alu_ctrl = 5'b00011; end // bgt -> assembler done
-            6'b001111: begin branch_gte = 1;alu_ctrl = 5'b00011; end // bgte -> opcode clash with lui
+            6'b111110: begin branch_gte = 1;alu_ctrl = 5'b00011; end // bgte -> opcode clash with lui
             6'b111001: begin branch_lt  = 1;alu_ctrl = 5'b00011; end // ble -> assembler done
             6'b111010: begin branch_lte = 1;alu_ctrl = 5'b00011; end // bleq -> assembler done
             6'b111011: begin branch_ltu = 1;alu_ctrl = 5'b00011; end // bleu -> assembler done
