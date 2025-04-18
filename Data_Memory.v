@@ -16,7 +16,7 @@ module Data_memory(
         end
     end
 
-    always @(posedge clk) begin
+    always @(*) begin
         if (mem_read) begin
             read_data <= memory[address[11:2]]; // Read data from memory
         end

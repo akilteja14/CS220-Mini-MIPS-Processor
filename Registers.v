@@ -10,7 +10,7 @@ module Registers(input [4:0] rs,input [4:0] rt,input [4:0] rd,input reg_dst,outp
         registers[0] = 32'b0; // Register 0 is always 0
     end
     
-    always @(posedge clk) begin
+    always @(*) begin
         // if(reset) begin
         //     registers[0] <= 32'b0;
         //     registers[1] <= 32'b0;
