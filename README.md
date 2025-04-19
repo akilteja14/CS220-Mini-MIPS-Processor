@@ -21,4 +21,4 @@ This project implements a Mini MIPS Processor in Verilog. It includes modules fo
 
 ## Reference
 We have written the code and made connections taking the below image as our reference.
-![alt text](0f9a50c7-9edb-4a92-a4ad-274cf8291cb9.png)
+![Diagram](Diagram.png)
