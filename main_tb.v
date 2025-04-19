@@ -12,6 +12,6 @@ module main_tb;
     always begin
         #5 clk = ~clk;
     end
-    initial #66 $finish;
+    initial #200 $finish;
     
 endmodule
