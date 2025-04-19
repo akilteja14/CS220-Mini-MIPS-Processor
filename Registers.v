@@ -57,6 +57,6 @@ module Registers(input [4:0] rs,input [4:0] rt,input [4:0] rd,input reg_dst,outp
     assign read_data1 = registers[rs];
     assign read_data2 = registers[rt];
     initial begin
-        $monitor("Register 0: %d, Register 1: %d, Register 2: %d, Register 3: %d", registers[0], registers[1], registers[2], registers[3]);
+        $monitor("Register 0: %d, Register 1: %d, Register 2: %d, Register 3: %d, Register 4: %d", registers[0], registers[1], registers[2], registers[3], registers[4]);
     end
 endmodule 

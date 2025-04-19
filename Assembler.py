@@ -53,7 +53,7 @@ def MUL(instr):
     rt = int(str_list[2])
     instr_val_0 = np.binary_repr(opcode, 6)
     instr_val_1 = np.binary_repr(rs, 5)
-    instr_val_2 = np.bianry_repr(rt, 5)
+    instr_val_2 = np.binary_repr(rt, 5)
     instr_val_3 = np.binary_repr(0, 10)
     instr_val_4 = np.binary_repr(funct, 6)
     return instr_val_0+instr_val_1+instr_val_2+instr_val_3+instr_val_4
@@ -394,18 +394,18 @@ def BGT(instr):
     instr_val_3 = np.binary_repr(offset, 16)
     return instr_val_0+instr_val_1+instr_val_2+instr_val_3
 
-# def BGTE(instr):
-#     # opcode=0x
-#     instr=instr.strip()
-#     str_list=instr.split(',')
-#     rs=int(str_list[1])
-#     rt=int(str_list[2])
-#     offset=int(str_list[3])
-#     instr_val_0 = np.binary_repr(opcode, 6)
-#     instr_val_1 = np.binary_repr(rs, 5)
-#     instr_val_2 = np.binary_repr(rt, 5)
-#     instr_val_3 = np.binary_repr(offset, 16)
-#     return instr_val_0+instr_val_1+instr_val_2+instr_val_3
+def BGTE(instr):
+    opcode=0x3e
+    instr=instr.strip()
+    str_list=instr.split(',')
+    rs=int(str_list[1])
+    rt=int(str_list[2])
+    offset=int(str_list[3])
+    instr_val_0 = np.binary_repr(opcode, 6)
+    instr_val_1 = np.binary_repr(rs, 5)
+    instr_val_2 = np.binary_repr(rt, 5)
+    instr_val_3 = np.binary_repr(offset, 16)
+    return instr_val_0+instr_val_1+instr_val_2+instr_val_3
 
 def BLE(instr):
     opcode=0x39
@@ -603,7 +603,7 @@ for instrs in Instrs:
         ret_instr=BNE(instrs)
         machine_code.write(ret_instr +'\n')
 
-    elif(instrs[0:3]=="BGT" and instrs[0:4] != "BGTU"):
+    elif(instrs[0:3]=="BGT" and instrs[0:4] != "BGTU" and instrs[0:4] != "BGTE"):
         ret_instr=BGT(instrs)
         machine_code.write(ret_instr +'\n')
 
@@ -621,6 +621,10 @@ for instrs in Instrs:
 
     elif(instrs[0:4]=="BGTU"):
         ret_instr=BGTU(instrs)
+        machine_code.write(ret_instr +'\n')
+
+    elif(instrs[0:4]=="BGTE"):
+        ret_instr=BGTE(instrs)
         machine_code.write(ret_instr +'\n')
 
     elif(instrs[0:4]=="JUMP"):
